@@ -6,6 +6,10 @@ let isDown = false;
 let startX;
 let scrollLeft;
 
+function getSlideWidth() {
+  return window.matchMedia("(max-width: 768px)").matches ? 400 : 600;
+}
+
 function showSlides(n) {
   if (n > slides.length) {
     slideIndex = 1;
@@ -14,8 +18,8 @@ function showSlides(n) {
     slideIndex = slides.length;
   }
 
-  // Calculate the correct transform value to show the desired slide
-  slider.style.transform = `translateX(-${(slideIndex - 1) * 600}px)`;
+  const slideWidth = getSlideWidth();
+  slider.style.transform = `translateX(-${(slideIndex - 1) * slideWidth}px)`;
 
   dots.forEach((dot, index) => {
     dot.classList.toggle("active", index === slideIndex - 1);
@@ -58,4 +62,10 @@ slider.addEventListener("mousemove", (e) => {
   slider.scrollLeft = scrollLeft - walk;
 });
 
+// Lắng nghe sự kiện resize để cập nhật slider
+window.addEventListener("resize", () => {
+  showSlides(slideIndex);
+});
+
+// Hiển thị slide ban đầu
 showSlides(slideIndex);
